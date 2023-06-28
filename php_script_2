@@ -1,0 +1,43 @@
+$arr = ['bebe' => 'Bob', 'age' => 23, 'too' => 23 ];
+xdebug_debug_zval( 'arr' );
+
+Output:
+arr:
+
+(refcount=2, is_ref=0)
+array (size=3)
+  'bebe' => (refcount=1, is_ref=0)string 'Bob' (length=3)
+  'age' => (refcount=0, is_ref=0)int 23
+  'too' => (refcount=0, is_ref=0)int 23
+
+but :
+$arr = ['bebe' => 'Bob', 'age' => 23, 'too' => '23' ];
+xdebug_debug_zval( 'arr' );
+
+will produce:
+arr:
+
+(refcount=2, is_ref=0)
+array (size=3)
+  'bebe' => (refcount=1, is_ref=0)string 'Bob' (length=3)
+  'age' => (refcount=0, is_ref=0)int 23
+  'too' => (refcount=1, is_ref=0)string '23' (length=2)
+or :
+
+$arr = ['bebe' => 'Bob', 'age' => [1,2], 'too' => [1,2] ];
+xdebug_debug_zval( 'arr' );
+
+Output:
+arr:
+
+(refcount=2, is_ref=0)
+array (size=3)
+  'bebe' => (refcount=1, is_ref=0)string 'Bob' (length=3)
+  'age' => (refcount=2, is_ref=0)
+    array (size=2)
+      0 => (refcount=0, is_ref=0)int 1
+      1 => (refcount=0, is_ref=0)int 2
+  'too' => (refcount=2, is_ref=0)
+    array (size=2)
+      0 => (refcount=0, is_ref=0)int 1
+      1 => (refcount=0, is_ref=0)int 2
