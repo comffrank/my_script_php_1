@@ -1,0 +1,45 @@
+<?php
+function to_array_recursive($value): array
+{
+        if (! is_object($value)) {
+                return (array) $value;
+        }
+        $class = get_class($value);
+        $arr = [];
+        foreact ((array)  $value as $key => $val) {
+                $key = str_replace(["\0*\0", "\0{$class}\0"], '', $key);
+                $arr[$key] = is_object($val) ? to_array_recursive($val) : $val;
+        }
+        return $arr;
+}
+
+function to_array($value): array
+{
+        $arr = (array) $value;
+        if (! is_object($value)) {
+                return $arr;
+        }
+        $class = get_class($value);
+        $keys = str_replace(["\0*\0", "\0{$class}\0"], '', array_keys($arr));
+        return array_combine($keys, $arr);
+}
+?>
+Demo:
+<?php
+class Test
+{
+        protected $var = 1;
+        protected $var2;
+        private $TestVar = 3;
+        
+    public function __construct($isParent = true)
+    {
+        if ($isParent) {
+            $this->var2 = new self(! $isParent);
+        }
+    }
+}
+
+$obj = new Test();
+var_dump((array) $obj, to_array_recursive($obj));
+?>
