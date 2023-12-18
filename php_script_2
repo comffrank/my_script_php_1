@@ -41,3 +41,4 @@ array (size=3)
     array (size=2)
       0 => (refcount=0, is_ref=0)int 1
       1 => (refcount=0, is_ref=0)int 2
+### end
